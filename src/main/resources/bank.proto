@@ -1,0 +1,49 @@
+syntax = "proto3";
+option java_package="cours.apprentissage.bankgrpcservice.grpc.stub";
+enum AccountType{
+  CURRENT_ACCOUNT = 0;
+  SAVING_ACCOUNT = 1;
+}
+enum AccountState{
+  CREATED = 0;
+  ACTIVATED = 1;
+  SUSPENDED = 2;
+  BLOCKED = 3;
+}
+message BankAccount{
+  string accountId = 1;
+  double balance = 2;
+  int64 createdAt = 3;
+  AccountType type = 4;
+  AccountState state = 5;
+}
+message GetBankAccoutRequest{
+  string accountId = 1;/*recupere le compte a travers sont id*/
+}
+message GetBankAccoutResponse{
+  BankAccount bankAccount = 1;/*Je return un compte comme response a la requette*/
+}
+message GetListsAccountRequest{};
+message GetListsAccountResponse{
+  repeated BankAccount listeBankAccount = 1;
+}
+message ConvertCurrencyRequest{
+  string currencyForm = 1;
+  string currencyTo = 2;
+  double amount = 3;
+}
+
+message ConvertCurrencyResponse{
+  string currencyForm = 1;
+  string currencyTo = 2;
+  double amount = 3;
+  double conversionResult = 4;
+}
+
+/*Declaration de l'interface du service distant
+c'est dans cette interface que nous allons declarer les operation dont on a besoin*/
+service BankService{
+  rpc getBankAccount(GetBankAccoutRequest) returns (GetBankAccoutResponse);
+  rpc getListAccounts(GetListsAccountRequest) returns (GetListsAccountResponse);
+  rpc convertCurrency(ConvertCurrencyRequest) returns (ConvertCurrencyResponse);
+}
